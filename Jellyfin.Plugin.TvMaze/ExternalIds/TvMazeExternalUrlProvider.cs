@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Jellyfin.Plugin.TvMaze.Providers;
 using MediaBrowser.Controller.Entities;
 using MediaBrowser.Controller.Entities.TV;
 using MediaBrowser.Controller.Providers;
@@ -17,7 +18,8 @@ public class TvMazeExternalUrlProvider : IExternalUrlProvider
     /// <inheritdoc />
     public IEnumerable<string> GetExternalUrls(BaseItem item)
     {
-        if (item.TryGetProviderId(TvMazePlugin.ProviderId, out var externalId))
+        var externalId = TvHelpers.GetTvMazeId(item.ProviderIds);
+        if (externalId is not null)
         {
             switch (item)
             {

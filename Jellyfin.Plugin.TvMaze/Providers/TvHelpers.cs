@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 
 namespace Jellyfin.Plugin.TvMaze.Providers
 {
@@ -11,8 +12,12 @@ namespace Jellyfin.Plugin.TvMaze.Providers
     {
         internal static int? GetTvMazeId(Dictionary<string, string> providerIds)
         {
-            if (providerIds.TryGetValue(TvMazePlugin.ProviderId, out var id)
-            && !string.IsNullOrEmpty(id))
+            // Jellyfin stores this key as "TvMaze" and, since 10.11, loads provider IDs
+            // into a case-sensitive dictionary, so match the key without regard to case.
+            var id = providerIds
+                .FirstOrDefault(p => string.Equals(p.Key, TvMazePlugin.ProviderId, StringComparison.OrdinalIgnoreCase))
+                .Value;
+            if (!string.IsNullOrEmpty(id))
             {
                 return Convert.ToInt32(id, CultureInfo.InvariantCulture);
             }
