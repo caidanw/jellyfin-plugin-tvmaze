@@ -192,6 +192,20 @@ namespace Jellyfin.Plugin.TvMaze.Providers
                     series.Status = SeriesStatus.Ended;
                 }
 
+                if (!string.IsNullOrWhiteSpace(tvMazeShow.Schedule?.Time))
+                {
+                    series.AirTime = tvMazeShow.Schedule.Time;
+                }
+
+                var airDays = tvMazeShow.Schedule?.Days
+                    .Select(d => Enum.TryParse<DayOfWeek>(d, true, out var day) ? day : (DayOfWeek?)null)
+                    .OfType<DayOfWeek>()
+                    .ToArray();
+                if (airDays?.Length > 0)
+                {
+                    series.AirDays = airDays;
+                }
+
                 series.Overview = TvHelpers.GetStrippedHtml(tvMazeShow.Summary);
                 series.HomePageUrl = tvMazeShow.Url;
                 SetProviderIds(tvMazeShow, series);
