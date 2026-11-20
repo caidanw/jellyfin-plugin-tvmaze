@@ -207,7 +207,7 @@ namespace Jellyfin.Plugin.TvMaze.Providers
                 }
 
                 series.Overview = TvHelpers.GetStrippedHtml(tvMazeShow.Summary);
-                series.HomePageUrl = tvMazeShow.Url;
+                series.HomePageUrl = string.IsNullOrWhiteSpace(tvMazeShow.OfficialSite) ? tvMazeShow.Url : tvMazeShow.OfficialSite;
                 SetProviderIds(tvMazeShow, series);
 
                 // Set cast.
