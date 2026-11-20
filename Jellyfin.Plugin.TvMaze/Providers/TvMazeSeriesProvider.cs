@@ -155,15 +155,12 @@ namespace Jellyfin.Plugin.TvMaze.Providers
                 series.Name = tvMazeShow.Name;
                 series.Genres = tvMazeShow.Genres?.ToArray() ?? Array.Empty<string>();
 
-                if (!string.IsNullOrWhiteSpace(tvMazeShow.Network?.Name))
+                // Streaming-only shows have a web channel (e.g. Netflix) instead of a network.
+                var studio = GetStudioName(tvMazeShow.Network?.Name, tvMazeShow.Network?.Country?.Code)
+                    ?? GetStudioName(tvMazeShow.WebChannel?.Name, tvMazeShow.WebChannel?.Country?.Code);
+                if (studio is not null)
                 {
-                    var networkName = tvMazeShow.Network.Name;
-                    if (!string.IsNullOrWhiteSpace(tvMazeShow.Network?.Country?.Code))
-                    {
-                        networkName = $"{tvMazeShow.Network.Name} ({tvMazeShow.Network.Country.Code})";
-                    }
-
-                    series.Studios = new[] { networkName };
+                    series.Studios = new[] { studio };
                 }
 
                 if (tvMazeShow.Premiered.HasValue)
@@ -232,6 +229,16 @@ namespace Jellyfin.Plugin.TvMaze.Providers
         public Task<HttpResponseMessage> GetImageResponse(string url, CancellationToken cancellationToken)
         {
             return _httpClientFactory.CreateClient(NamedClient.Default).GetAsync(new Uri(url), cancellationToken);
+        }
+
+        private static string? GetStudioName(string? name, string? countryCode)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return null;
+            }
+
+            return string.IsNullOrWhiteSpace(countryCode) ? name : $"{name} ({countryCode})";
         }
 
         private async Task<Show?> GetIdentifyShow(ItemLookupInfo lookupInfo, TvMazeClient tvMazeClient)
