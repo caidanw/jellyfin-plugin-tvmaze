@@ -169,6 +169,8 @@ namespace Jellyfin.Plugin.TvMaze.Providers
                     series.ProductionYear = tvMazeShow.Premiered.Value.Year;
                 }
 
+                series.EndDate = tvMazeShow.Ended;
+
                 if (tvMazeShow.Rating?.Average != null)
                 {
                     series.CommunityRating = (float?)tvMazeShow.Rating.Average;
