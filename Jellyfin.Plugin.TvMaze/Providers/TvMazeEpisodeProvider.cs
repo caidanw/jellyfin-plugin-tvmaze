@@ -273,7 +273,7 @@ namespace Jellyfin.Plugin.TvMaze.Providers
 
             if (tvMazeEpisode.Runtime.HasValue)
             {
-                episode.RunTimeTicks = TimeSpan.FromTicks(tvMazeEpisode.Runtime.Value).Ticks;
+                episode.RunTimeTicks = TimeSpan.FromMinutes(tvMazeEpisode.Runtime.Value).Ticks;
             }
 
             episode.Overview = TvHelpers.GetStrippedHtml(tvMazeEpisode.Summary);
@@ -299,7 +299,7 @@ namespace Jellyfin.Plugin.TvMaze.Providers
 
             if (tvMazeEpisode.Runtime.HasValue)
             {
-                episode.RunTimeTicks = TimeSpan.FromTicks(tvMazeEpisode.Runtime.Value).Ticks;
+                episode.RunTimeTicks = TimeSpan.FromMinutes(tvMazeEpisode.Runtime.Value).Ticks;
             }
 
             episode.SetProviderId(TvMazePlugin.ProviderId, tvMazeEpisode.Id.ToString(CultureInfo.InvariantCulture));
