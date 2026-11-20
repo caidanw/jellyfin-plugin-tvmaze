@@ -144,7 +144,8 @@ namespace Jellyfin.Plugin.TvMaze.Providers
                     {
                         Name = tvMazeSeason.Name,
                         IndexNumber = tvMazeSeason.Number,
-                        Overview = TvHelpers.GetStrippedHtml(tvMazeSeason.Summary)
+                        Overview = TvHelpers.GetStrippedHtml(tvMazeSeason.Summary),
+                        EndDate = tvMazeSeason.EndDate
                     };
 
                     if (DateTime.TryParse(tvMazeSeason.PremiereDate, out var premiereDate))
