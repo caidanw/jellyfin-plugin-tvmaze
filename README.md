@@ -16,6 +16,9 @@
 </a>
 </p>
 
+> **Fork note:** this is [caidanw](https://github.com/caidanw)'s fork for Jellyfin 10.11, built from the
+> upstream v13 release and published as version 13.99. See `build.yaml` for what it changes.
+
 ## About
 
 This plugin adds the metadata provider for [TVmaze](https://www.tvmaze.com/).

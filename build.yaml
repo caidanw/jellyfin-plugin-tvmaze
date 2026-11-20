@@ -1,10 +1,10 @@
 name: "TVmaze"
 guid: "A4A488D0-17A3-4919-8D82-7F3DE4F6B209"
 imageUrl: "https://repo.jellyfin.org/releases/plugin/images/jellyfin-plugin-tvmaze.png"
-version: 13
+version: "13.99.0.0"
 targetAbi: "10.11.0.0"
 framework: "net9.0"
-owner: "jellyfin"
+owner: "caidanw"
 overview: "Get TV metadata from TVmaze"
 description: >
   Get TV metadata from TVmaze
@@ -17,4 +17,12 @@ artifacts:
   - "Flurl.Http.dll"
   - "Polly.dll"
 changelog: |-
-  - Jellyfin 10.11 support (#55) @crobibero
+  Fork of jellyfin-plugin-tvmaze v13 for Jellyfin 10.11:
+  - Match the TVmaze provider ID key without regard to case
+  - Use the TvMaze Season ID and Episode ID if known (upstream #65)
+  - Update TvMaze.Api.Client to 0.1.84
+  - Populate season overview and end date
+  - Fix episode runtime units and add episode community rating
+  - Use the web channel as studio, fall back to average runtime
+  - Populate series end date, air time and days, official site
+  - Add series creator and composer credits
