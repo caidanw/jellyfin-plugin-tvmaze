@@ -174,9 +174,11 @@ namespace Jellyfin.Plugin.TvMaze.Providers
                     series.CommunityRating = (float?)tvMazeShow.Rating.Average;
                 }
 
-                if (tvMazeShow.Runtime.HasValue)
+                // Shows with varying episode lengths only report an average runtime.
+                var runtime = tvMazeShow.Runtime ?? tvMazeShow.AverageRuntime;
+                if (runtime.HasValue)
                 {
-                    series.RunTimeTicks = TimeSpan.FromMinutes(tvMazeShow.Runtime.Value).Ticks;
+                    series.RunTimeTicks = TimeSpan.FromMinutes(runtime.Value).Ticks;
                 }
 
                 if (string.Equals(tvMazeShow.Status, "Running", StringComparison.OrdinalIgnoreCase))
