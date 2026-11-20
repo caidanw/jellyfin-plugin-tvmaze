@@ -230,6 +230,32 @@ namespace Jellyfin.Plugin.TvMaze.Providers
                     result.AddPerson(personInfo);
                 }
 
+                // Set the crew roles that have a Jellyfin equivalent.
+                var crewMembers = await tvMazeClient.Shows.GetShowCrewAsync(tvMazeShow.Id).ConfigureAwait(false);
+                foreach (var crewMember in crewMembers)
+                {
+                    var kind = crewMember.Type switch
+                    {
+                        "Creator" or "Developer" => PersonKind.Creator,
+                        "Music" => PersonKind.Composer,
+                        _ => PersonKind.Unknown
+                    };
+
+                    if (crewMember.Person == null || kind == PersonKind.Unknown)
+                    {
+                        continue;
+                    }
+
+                    var personInfo = new PersonInfo();
+                    personInfo.SetProviderId(TvMazePlugin.ProviderId, crewMember.Person.Id.ToString(CultureInfo.InvariantCulture));
+                    personInfo.Name = crewMember.Person.Name;
+                    personInfo.Type = kind;
+                    personInfo.ImageUrl = crewMember.Person.Image?.Original
+                                          ?? crewMember.Person.Image?.Medium;
+
+                    result.AddPerson(personInfo);
+                }
+
                 result.Item = series;
                 result.HasMetadata = true;
 
